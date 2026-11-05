@@ -1,5 +1,7 @@
+// ==============================
+// PERGUNTAS DO QUIZ
+// ==============================
 
-// Perguntas do quiz
 const perguntas = [
     // Fáceis
     {
@@ -24,17 +26,17 @@ const perguntas = [
     },
     {
         pergunta: "Qual a data de nascimento dela?",
-        alternativas: ["21/02/2009", "21/02/2010" ,"22/02/2010" , "21/01/2010"],
+        alternativas: ["21/02/2009", "21/02/2010", "22/02/2010", "21/01/2010"],
         respostaCorreta: 1
     },
     {
         pergunta: "Qual é o maior medo dela?",
-        alternativas: ["Escorpião", "Altura", "Barata","Largatixa" ],
+        alternativas: ["Escorpião", "Altura", "Barata", "Largatixa"],
         respostaCorreta: 2
     },
     {
         pergunta: "Qual é a sobremesa favorita dela?",
-        alternativas: [ "Açai/sorvete","Bolo", "Churros", "Gelatina"],
+        alternativas: ["Açai/sorvete", "Bolo", "Churros", "Gelatina"],
         respostaCorreta: 0
     },
     {
@@ -112,11 +114,20 @@ const perguntas = [
     }
 ];
 
-// Variáveis do quiz
+
+// ==============================
+// VARIÁVEIS
+// ==============================
+
 let indiceAtual = 0;
 let pontuacao = 0;
+let respondeu = false;
 
-// Elementos do HTML
+
+// ==============================
+// ELEMENTOS DO HTML
+// ==============================
+
 const btnIniciar = document.getElementById("btn-iniciar");
 const areaQuiz = document.getElementById("area-quiz");
 const elementoPergunta = document.getElementById("pergunta");
@@ -125,13 +136,40 @@ const resultado = document.getElementById("resultado");
 const btnProxima = document.getElementById("btn-proxima");
 const imagemResultado = document.getElementById("imagem-resultado");
 
-// Elementos dos resultados finais
 const premio = document.getElementById("premio");
 const melhorar = document.getElementById("melhorar");
 const naoConhece = document.getElementById("nao-conhece");
+const gabaritou = document.getElementById("gabaritou");
 
-// Começar o quiz
+
+// Verificar se todos os elementos existem
+const elementos = [
+    btnIniciar,
+    areaQuiz,
+    elementoPergunta,
+    alternativas,
+    resultado,
+    btnProxima,
+    imagemResultado,
+    premio,
+    melhorar,
+    naoConhece,
+    gabaritou
+];
+
+if (elementos.some(elemento => elemento === null)) {
+    console.error("Erro: confira os IDs dos elementos no HTML.");
+}
+
+
+// ==============================
+// COMEÇAR O QUIZ
+// ==============================
+
 btnIniciar.addEventListener("click", function() {
+
+    indiceAtual = 0;
+    pontuacao = 0;
 
     btnIniciar.style.display = "none";
     areaQuiz.style.display = "flex";
@@ -140,8 +178,14 @@ btnIniciar.addEventListener("click", function() {
 
 });
 
-// Mostrar pergunta e alternativas
+
+// ==============================
+// MOSTRAR PERGUNTA
+// ==============================
+
 function mostrarPergunta() {
+
+    respondeu = false;
 
     resultado.innerText = "";
     alternativas.innerHTML = "";
@@ -151,10 +195,10 @@ function mostrarPergunta() {
     imagemResultado.style.display = "none";
     imagemResultado.src = "";
 
-    // Esconder as mensagens finais
     premio.style.display = "none";
     melhorar.style.display = "none";
     naoConhece.style.display = "none";
+    gabaritou.style.display = "none";
 
     const perguntaAtual = perguntas[indiceAtual];
 
@@ -165,6 +209,7 @@ function mostrarPergunta() {
         const botao = document.createElement("button");
 
         botao.innerText = alternativa;
+        botao.type = "button";
 
         botao.addEventListener("click", function() {
             verificarResposta(indice);
@@ -176,14 +221,23 @@ function mostrarPergunta() {
 
 }
 
-// Verificar se a resposta está correta
+
+// ==============================
+// VERIFICAR RESPOSTA
+// ==============================
+
 function verificarResposta(indiceEscolhido) {
+
+    if (respondeu) {
+        return;
+    }
+
+    respondeu = true;
 
     const perguntaAtual = perguntas[indiceAtual];
 
     const botoes = alternativas.querySelectorAll("button");
 
-    // Desabilitar os botões e mostrar as respostas
     botoes.forEach(function(botao, indice) {
 
         botao.disabled = true;
@@ -192,16 +246,15 @@ function verificarResposta(indiceEscolhido) {
             botao.classList.add("correta");
         }
 
-        if (indice === indiceEscolhido &&
-            indice !== perguntaAtual.respostaCorreta) {
-
+        if (
+            indice === indiceEscolhido &&
+            indice !== perguntaAtual.respostaCorreta
+        ) {
             botao.classList.add("errada");
-
         }
 
     });
 
-    // Verificar se acertou ou errou
     if (indiceEscolhido === perguntaAtual.respostaCorreta) {
 
         resultado.innerText = "Você acertou!";
@@ -209,7 +262,6 @@ function verificarResposta(indiceEscolhido) {
         imagemResultado.src = "acertou.jpg";
         imagemResultado.alt = "Cachorrinho comemorando";
 
-        // Somar um ponto
         pontuacao++;
 
     } else {
@@ -227,8 +279,16 @@ function verificarResposta(indiceEscolhido) {
 
 }
 
-// Ir para a próxima pergunta
+
+// ==============================
+// PRÓXIMA PERGUNTA
+// ==============================
+
 btnProxima.addEventListener("click", function() {
+
+    if (!respondeu) {
+        return;
+    }
 
     indiceAtual++;
 
@@ -244,40 +304,54 @@ btnProxima.addEventListener("click", function() {
 
 });
 
-// Finalizar o quiz e mostrar a pontuação
+
+// ==============================
+// FINALIZAR QUIZ
+// ==============================
+
 function finalizarQuiz() {
 
     elementoPergunta.innerText = "Quiz finalizado! ❤️";
 
     alternativas.innerHTML = "";
 
-    resultado.innerText = "Você acertou " + pontuacao +
+    resultado.innerText =
+        "Você acertou " + pontuacao +
         " de " + perguntas.length + " perguntas!";
 
     imagemResultado.style.display = "none";
 
     btnProxima.style.display = "none";
 
-    // Esconder todos os resultados antes de mostrar o correto
+    // Esconder todos os resultados
     premio.style.display = "none";
     melhorar.style.display = "none";
     naoConhece.style.display = "none";
+    gabaritou.style.display = "none";
 
-    // 16 a 18 acertos
-    if (pontuacao >= 16) {
+
+    // GABARITOU: acertou todas as 20 perguntas
+    if (pontuacao === perguntas.length) {
+
+        gabaritou.style.display = "block";
+
+    }
+
+    // De 16 a 19 acertos
+    else if (pontuacao >= 16) {
 
         premio.style.display = "block";
 
     }
 
-    // 10 a 15 acertos
+    // De 10 a 15 acertos
     else if (pontuacao >= 10) {
 
         melhorar.style.display = "block";
 
     }
 
-    // 0 a 9 acertos
+    // De 0 a 9 acertos
     else {
 
         naoConhece.style.display = "block";
