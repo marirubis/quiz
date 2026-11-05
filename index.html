@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1 class="t-principal">Prova surpresa do mozão</h1>
+
+    <h3>Quanto você sabe sobre mim?</h3>
+
+    <button id="btn-iniciar">Iniciar</button>
+
+    <div class="perguntas" id="area-quiz" style="display: none;">
+
+
+        <h2 id="pergunta"></h2>
+
+        <!-- Imagem que aparece ao acertar ou errar -->
+        <img id="imagem-resultado" src="" alt="">
+
+        <!-- Alternativas -->
+        <div id="alternativas"></div>
+
+        <!-- Mensagem de acerto ou erro -->
+        <p id="resultado"></p>
+
+        <!-- Botão para avançar -->
+        <button id="btn-proxima" style="display: none;">
+            Próxima pergunta
+        </button>
+
+        <!-- Resultado: 16 a 18 acertos -->
+        <div id="premio" style="display: none;">
+
+            <h2>Parabéns! Merece de um prêmio! ❤️</h2>
+
+            <img src="picapau.png" alt="Imagem do prêmio">
+
+        </div>
+
+        <!-- Resultado: 9 a 15 acertos -->
+        <div id="melhorar" style="display: none;">
+
+            <h2>Precisa melhorar! </h2>
+
+            <img src="deboche.jpg" alt="Imagem precisa melhorar">
+
+        </div>
+
+        <!-- Resultado: 0 a 8 acertos -->
+        <div id="nao-conhece" style="display: none;">
+
+            <h2>Você não conhece sua própria namorada!!!</h2>
+
+            <img src="chorando.jpg" alt="Gatinho triste">
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
